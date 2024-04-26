@@ -12,10 +12,10 @@
 
 #include "libft.h"
 
-static void	push(char *str, char ***words_ptr)
+static void push(char *str, char ***words_ptr)
 {
-	int		i;
-	char	**new_words;
+	int i;
+	char **new_words;
 
 	i = 0;
 	while ((*words_ptr)[i])
@@ -33,14 +33,15 @@ static void	push(char *str, char ***words_ptr)
 		*words_ptr = NULL;
 }
 
-char	**ft_split(char const *s, char c)
+char **ft_split(char const *s, char c)
 {
-	char	**words;
-	int		i;
-	int		j;
-	char	*ptr_c;
-	char	*substr;
+	char **words;
+	int i;
+	int j;
+	char *ptr_c;
+	char *substr;
 
+	write(1, "x\n", 2);
 	words = malloc(sizeof(char *));
 	if (words == NULL)
 		return (NULL);
@@ -49,24 +50,17 @@ char	**ft_split(char const *s, char c)
 	while (s[i])
 	{
 		ptr_c = ft_strchr((s + i), c);
-		if(ptr_c)
+		if (ptr_c)
 			j = ptr_c - (s + i);
 		else
-			j = (int)ft_strlen(s + i);
+			j = ft_strlen(s + i);
+		ft_itoa(j);
 		if (j)
 		{
 			substr = ft_substr(s, i, j + 1);
 			push(substr, &words);
-			i += j;
+			i += j + 1;
 		}
-		i++;
 	}
 	return (words);
 }
-			// write(1,"i: ",3);
-			// write(1, ft_itoa(i),2);
-			// write(1,"j: ",3);
-			// write(1, ft_itoa(j),2);
-			// write(1,"j: ",3);
-			// write(1, ft_itoa(j),2);
-			// write(1,"\n",1);

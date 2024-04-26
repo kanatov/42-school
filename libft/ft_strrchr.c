@@ -10,14 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-char	*ft_strrchr(const char *s, int c)
+char *ft_strrchr(const char *s, int c)
 {
-	char	*ptr_s;
-	int		i;
+	char *ptr_s;
+	int i;
 
-	ptr_s = NULL;
+	ptr_s = (void *)0;
 	i = 0;
 	while (s && s[i])
 	{
