@@ -415,6 +415,162 @@ int main()
 	printf("%d, %p, %p\n", ft_strncmp(strdup_src, strdup_dst, 1), strdup_src, strdup_dst);
 	free(strdup_dst);
 
+	printf("\nft_strjoin\n");
+	char *str_strjoin = ft_strjoin("Hello", "123");
+	printf(">%s<\n", str_strjoin);
+	free(str_strjoin);
+	str_strjoin = ft_strjoin("", "123");
+	printf(">%s<\n", str_strjoin);
+	free(str_strjoin);
+	str_strjoin = ft_strjoin("123", "");
+	printf(">%s<\n", str_strjoin);
+	free(str_strjoin);
+	str_strjoin = ft_strjoin("", "");
+	printf(">%s<\n", str_strjoin);
+	free(str_strjoin);
+
+	printf("\nft_strtrim\n");
+	char *str_strtrim = ft_strtrim("   Hello ", " ");
+	printf("#1 >%s<\n", str_strtrim);
+	free(str_strtrim);
+	str_strtrim = ft_strtrim(" +----+ +How is it going? +++-- -", " +-");
+	printf("#2 >%s<\n", str_strtrim);
+	free(str_strtrim);
+	str_strtrim = ft_strtrim(" +---- +++-- -", " +-");
+	printf("#3 >%s<\n", str_strtrim);
+	free(str_strtrim);
+	str_strtrim = ft_strtrim(" +---- +++-- -", "");
+	printf("#4 >%s<\n", str_strtrim);
+	free(str_strtrim);
+	str_strtrim = ft_strtrim("", "");
+	printf("#5 >%s<\n", str_strtrim);
+	free(str_strtrim);
+	str_strtrim = ft_strtrim("", "+--=+");
+	printf("#6 >%s<\n", str_strtrim);
+	free(str_strtrim);
+
+	printf("\nft_itoa\n");
+	char *str_itoa = ft_itoa(120);
+	printf(">%s<\n", str_itoa);
+	free(str_itoa);
+	str_itoa = ft_itoa(969696);
+	printf(">%s<\n", str_itoa);
+	free(str_itoa);
+	str_itoa = ft_itoa(-1);
+	printf(">%s<\n", str_itoa);
+	free(str_itoa);
+	str_itoa = ft_itoa(0);
+	printf(">%s<\n", str_itoa);
+	free(str_itoa);
+	str_itoa = ft_itoa(1);
+	printf(">%s<\n", str_itoa);
+	free(str_itoa);
+	str_itoa = ft_itoa(-2147483648);
+	printf(">%s<\n", str_itoa);
+	free(str_itoa);
+	str_itoa = ft_itoa(2147483647);
+	printf(">%s<\n", str_itoa);
+	free(str_itoa);
+
+	printf("\nft_strmapi\n");
+	char (*ptr_uppercase)(unsigned int, char);
+	ptr_uppercase = &uppercase;
+	char *str_strmapi = ft_strmapi("Hello, World!", ptr_uppercase);
+	printf(">%s<\n", str_strmapi);
+	free(str_strmapi);
+
+	str_strmapi = ft_strmapi("Hello, World!", NULL);
+	printf(">%s<\n", str_strmapi);
+	free(str_strmapi);
+
+	printf("\nft_split\n");
+	char **words = ft_split("Here     will be      my sentence,    here     we go ", ' ');
+	i = 0;
+	while (words[i])
+	{
+		printf(">%s<\n", words[i]);
+		free(words[i]);
+		i++;
+	}
+	free(words);
+	printf("\n-\n");
+
+	words = ft_split("Here     will be      my sentence,    here     we go ", '\0');
+	i = 0;
+	while (words[i])
+	{
+		printf(">%s<\n", words[i]);
+		free(words[i]);
+		i++;
+	}
+	free(words);
+	printf("\n-\n");
+
+	words = ft_split("", ' ');
+	i = 0;
+	while (words[i])
+	{
+		printf(">%s<\n", words[i]);
+		free(words[i]);
+		i++;
+	}
+	free(words);
+	printf("\n-\n");
+
+	words = ft_split("", '\0');
+	i = 0;
+	while (words[i])
+	{
+		printf(">%s<\n", words[i]);
+		free(words[i]);
+		i++;
+	}
+	free(words);
+	printf("\n-\n");
+	words = ft_split("\0", '\0');
+	i = 0;
+	while (words[i])
+	{
+		printf(">%s<\n", words[i]);
+		free(words[i]);
+		i++;
+	}
+	free(words);
+	printf("\n-\n");
+
+	words = ft_split("          ", ' ');
+	i = 0;
+	while (words[i])
+	{
+		printf(">%s<\n", words[i]);
+		free(words[i]);
+		i++;
+	}
+	free(words);
+	printf("\n-\n");
+
+	words = ft_split("          ", '\0');
+	i = 0;
+	while (words[i])
+	{
+		printf(">%s<\n", words[i]);
+		free(words[i]);
+		i++;
+	}
+	free(words);
+	printf("\n-\n");
+
+	words = ft_split("Hi", ' ');
+	i = 0;
+	while (words[i])
+	{
+		printf(">%s<\n", words[i]);
+		free(words[i]);
+		i++;
+	}
+	free(words);
+	printf("\n-\n");
+
 	printf("\nft_substr\n");
 	char *substr_result;
 	substr_result = ft_substr("H", 0, 0);
@@ -450,144 +606,12 @@ int main()
 	substr_result = ft_substr("Hello", 6, 5);
 	printf("#12 >%s<\n", substr_result);
 	free(substr_result);
-
-	printf("\nft_strjoin\n");
-	char *str_strjoin = ft_strjoin("Hello", "123");
-	printf(">%s<\n", str_strjoin);
-	free(str_strjoin);
-	str_strjoin = ft_strjoin("", "123");
-	printf(">%s<\n", str_strjoin);
-	free(str_strjoin);
-	str_strjoin = ft_strjoin("123", "");
-	printf(">%s<\n", str_strjoin);
-	free(str_strjoin);
-	str_strjoin = ft_strjoin("", "");
-	printf(">%s<\n", str_strjoin);
-	free(str_strjoin);
-
-	printf("\nft_strtrim\n");
-	char *str_strtrim = ft_strtrim("   Hello ", " ");
-	printf("#1 >%s<\n", str_strtrim);
-	free(str_strtrim);
-	str_strtrim = ft_strtrim(" +----+ +How is it going? +++-- -", " +-");
-	printf("#2 >%s<\n", str_strtrim);
-	free(str_strtrim);
-	str_strtrim = ft_strtrim(" +---- +++-- -", " +-");
-	printf("#3 >%s<\n", str_strtrim);
-	free(str_strtrim);
-	str_strtrim = ft_strtrim(" +---- +++-- -", "");
-	printf("#4 >%s<\n", str_strtrim);
-	free(str_strtrim);
-	str_strtrim = ft_strtrim("", "");
-	printf("#5 >%s<\n", str_strtrim);
-	free(str_strtrim);
-	str_strtrim = ft_strtrim("", "+--=+");
-	printf("#6 >%s<\n", str_strtrim);
-	free(str_strtrim);
-
-	printf("\nft_split\n");
-	write(1, "x\n", 2);
-
-	char **words = ft_split("Here     will be      my sentence,    here     we go ", ' ');
-	i = 0;
-	while (words[i])
-	{
-		printf(">%s<\n", words[i]);
-		free(words[i]);
-		i++;
-	}
-	free(words);
-	printf("\n-\n");
-
-	words = ft_split("Here     will be      my sentence,    here     we go ", '\0');
-	i = 0;
-	while (words[i])
-	{
-		printf(">%s<\n", words[i]);
-		printf("[%d]\n", words[i][0]);
-		free(words[i]);
-		i++;
-	}
-	free(words);
-	printf("\n-\n");
-
-	words = ft_split("", ' ');
-	i = 0;
-	while (words[i])
-	{
-		printf(">%s<\n", words[i]);
-		free(words[i]);
-		i++;
-	}
-	free(words);
-	printf("\n-\n");
-
-	words = ft_split("\0", '\0');
-	i = 0;
-	while (words[i])
-	{
-		printf(">%s<\n", words[i]);
-		free(words[i]);
-		i++;
-	}
-	free(words);
-	printf("\n-\n");
-
-	words = ft_split("          ", ' ');
-	i = 0;
-	while (words[i])
-	{
-		printf(">%s<\n", words[i]);
-		free(words[i]);
-		i++;
-	}
-	free(words);
-	printf("\n-\n");
-
-	words = ft_split("Hi", ' ');
-	i = 0;
-	while (words[i])
-	{
-		printf(">%s<\n", words[i]);
-		free(words[i]);
-		i++;
-	}
-	free(words);
-	printf("\n-\n");
-
-	printf("\nft_itoa\n");
-	char *str_itoa = ft_itoa(120);
-	printf(">%s<\n", str_itoa);
-	free(str_itoa);
-	str_itoa = ft_itoa(969696);
-	printf(">%s<\n", str_itoa);
-	free(str_itoa);
-	str_itoa = ft_itoa(-1);
-	printf(">%s<\n", str_itoa);
-	free(str_itoa);
-	str_itoa = ft_itoa(0);
-	printf(">%s<\n", str_itoa);
-	free(str_itoa);
-	str_itoa = ft_itoa(1);
-	printf(">%s<\n", str_itoa);
-	free(str_itoa);
-	str_itoa = ft_itoa(-2147483648);
-	printf(">%s<\n", str_itoa);
-	free(str_itoa);
-	str_itoa = ft_itoa(2147483647);
-	printf(">%s<\n", str_itoa);
-	free(str_itoa);
-
-	printf("\nft_strmapi\n");
-	char (*ptr_uppercase)(unsigned int, char);
-	ptr_uppercase = &uppercase;
-	char *str_strmapi = ft_strmapi("Hello, World!", ptr_uppercase);
-	printf(">%s<\n", str_strmapi);
-	free(str_strmapi);
-
-	str_strmapi = ft_strmapi("Hello, World!", NULL);
-	printf(">%s<\n", str_strmapi);
-	free(str_strmapi);
+	substr_result = ft_substr("lorem ipsum dolor sit amet", 0, 10);
+	printf("#13 >%s<\n", substr_result);
+	free(substr_result);
+	substr_result = ft_substr("lorem ipsum dolor sit amet", 7, 10);
+	printf("#14 >%s<\n", substr_result);
+	free(substr_result);
 
 	printf("\nEND _______________________________\n\n");
 	return (0);

@@ -33,34 +33,43 @@ static void push(char *str, char ***words_ptr)
 		*words_ptr = NULL;
 }
 
-char **ft_split(char const *s, char c)
+static void iterate(char ***words, char const *s, char c)
 {
-	char **words;
 	int i;
 	int j;
 	char *ptr_c;
 	char *substr;
 
-	write(1, "x\n", 2);
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			ptr_c = ft_strchr((s + i), c);
+			if (ptr_c)
+				j = ptr_c - (s + i);
+			else
+				j = ft_strlen(s + i);
+			if (j)
+			{
+				substr = ft_substr(s, i, j);
+				push(substr, words);
+				i += j;
+			}
+		}
+		if (s[i])
+			i++;
+	}
+}
+
+char **ft_split(char const *s, char c)
+{
+	char **words;
+
 	words = malloc(sizeof(char *));
 	if (words == NULL)
 		return (NULL);
 	words[0] = NULL;
-	i = 0;
-	while (s[i])
-	{
-		ptr_c = ft_strchr((s + i), c);
-		if (ptr_c)
-			j = ptr_c - (s + i);
-		else
-			j = ft_strlen(s + i);
-		ft_itoa(j);
-		if (j)
-		{
-			substr = ft_substr(s, i, j + 1);
-			push(substr, &words);
-			i += j + 1;
-		}
-	}
+	iterate(&words, s, c);
 	return (words);
 }

@@ -1,4 +1,6 @@
 clear
+make fclean
+rm -r main
 make
 cc -o main -Wall -Wextra -Werror main.c libft.a
 echo "\n_______________________________"
