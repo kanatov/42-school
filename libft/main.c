@@ -645,6 +645,7 @@ int main()
 	t_list *elem2 = ft_lstnew("b");
 	t_list *elem3 = ft_lstnew("c");
 	t_list *elem4 = ft_lstnew("d");
+	t_list *elem5 = ft_lstnew("e");
 	t_list *begin = NULL;
 	ft_lstadd_front(&begin, elem4);
 	ft_lstadd_front(&begin, elem3);
@@ -656,6 +657,23 @@ int main()
 		begin = begin->next;
 	}
 
+	printf("\nft_lstadd_back\n");
+	elem = ft_lstnew("a");
+	elem2 = ft_lstnew("b");
+	elem3 = ft_lstnew("c");
+	elem4 = ft_lstnew("d");
+	elem5 = ft_lstnew("e");
+	begin = NULL;
+	ft_lstadd_back(&begin, elem);
+	ft_lstadd_back(&begin, elem2);
+	ft_lstadd_back(&begin, elem3);
+	ft_lstadd_back(&begin, elem4);
+	ft_lstadd_back(&begin, elem5);
+	while (begin)
+	{
+		printf("%s\n", (char *)begin->content);
+		begin = begin->next;
+	}
 	printf("\nEND _______________________________\n\n");
 	return (0);
 }
