@@ -1,7 +1,7 @@
 clear
 make fclean
 rm -r main
-make
+make bonus
 cc -o main -Wall -Wextra -Werror main.c libft.a
 echo "\n_______________________________"
 # valgrind --tool=memcheck --leak-check=full --num-callers=20 --track-origins=yes ./main

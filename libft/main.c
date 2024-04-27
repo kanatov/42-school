@@ -11,6 +11,14 @@ char uppercase(unsigned int i, char c)
 		return ft_toupper(c);
 }
 
+void uppercase_ptr(unsigned int i, char *c)
+{
+	if (i % 2 == 0)
+		*c = ft_tolower(*c);
+	else
+		*c = ft_toupper(*c);
+}
+
 int main()
 {
 	printf("_______________________________\n\n");
@@ -622,6 +630,31 @@ int main()
 	printf("\n");
 	ft_putstr_fd("Hello", 1);
 	printf("\n");
+
+	printf("\nft_striteri\n");
+	void (*ptr_uppercase_ptr)(unsigned int, char *);
+	ptr_uppercase_ptr = &uppercase_ptr;
+	char ft_striteri_str[] = "Hello, World!";
+	ft_striteri(ft_striteri_str, ptr_uppercase_ptr);
+	printf(">%s<\n", ft_striteri_str);
+
+	ft_strmapi(ft_striteri_str, NULL);
+
+	printf("\nft_lstadd_front\n");
+	t_list *elem = ft_lstnew("a");
+	t_list *elem2 = ft_lstnew("b");
+	t_list *elem3 = ft_lstnew("c");
+	t_list *elem4 = ft_lstnew("d");
+	t_list *begin = NULL;
+	ft_lstadd_front(&begin, elem4);
+	ft_lstadd_front(&begin, elem3);
+	ft_lstadd_front(&begin, elem2);
+	ft_lstadd_front(&begin, elem);
+	while (begin)
+	{
+		printf("%s\n", (char *)begin->content);
+		begin = begin->next;
+	}
 
 	printf("\nEND _______________________________\n\n");
 	return (0);
