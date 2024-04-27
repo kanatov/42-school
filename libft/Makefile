@@ -48,7 +48,8 @@ SRCS_O = ${SRCS:.c=.o}
 
 SRCS_BONUS =	ft_lstnew.c \
 				ft_lstadd_front.c \
-				ft_lstsize.c
+				ft_lstsize.c \
+				ft_lstlast.c
 SRCS_BONUS_O = ${SRCS_BONUS:.c=.o}
 RM = rm -f
 NAME = libft.a
