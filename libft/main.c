@@ -613,6 +613,16 @@ int main()
 	printf("#14 >%s<\n", substr_result);
 	free(substr_result);
 
+	printf("\nft_putchar_fd\n");
+	ft_putchar_fd('c', 1);
+	printf("\n");
+	ft_putendl_fd("Hello", 1);
+	printf("\n");
+	ft_putnbr_fd(2, 1);
+	printf("\n");
+	ft_putstr_fd("Hello", 1);
+	printf("\n");
+
 	printf("\nEND _______________________________\n\n");
 	return (0);
 }
