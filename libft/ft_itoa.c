@@ -12,25 +12,42 @@
 
 #include "libft.h"
 
-void	convert(char *str, int n)
+static int	ilen(int n)
 {
-	if (n <= -10)
-		convert(str, n / 10);
-	str[ft_strlen(str)] = '0' + -(n % 10);
+	int	i;
+
+	i = 0;
+	while (n <= -10)
+	{
+		n /= 10;
+		i++;
+	}
+	return (i);
 }
 
 char	*ft_itoa(int n)
 {
 	char	*str;
-	char	*str_t;
+	int		i;
+	int		rest;
 
-	str = ft_calloc(12, sizeof(char));
-	if (n >= 0)
-		n = -n;
-	else
-		str[0] = '-';
-	convert(str, n);
-	str_t = ft_strdup(str);
-	free(str);
-	return (str_t);
+	i = 1;
+	if (n < 0)
+		i++;
+	rest = n;
+	if (n > 0)
+		rest = -rest;
+	i += ilen(rest);
+	str = malloc(sizeof(char) * (i + 1));
+	if (!str)
+		return (NULL);
+	*(str + i) = '\0';
+	while (i--)
+	{
+		*(str + i) = '0' + -(rest % 10);
+		rest /= 10;
+	}
+	if (n < 0)
+		*str = '-';
+	return (str);
 }

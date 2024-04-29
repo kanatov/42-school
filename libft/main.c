@@ -2,6 +2,8 @@
 #include <ctype.h>
 #include <string.h>
 #include "libft.h"
+#include <bsd/string.h>
+#include <limits.h>
 
 char uppercase(unsigned int i, char c)
 {
@@ -21,11 +23,10 @@ void uppercase_ptr(unsigned int i, char *c)
 
 void uppercase_node(void *item)
 {
-	t_list *ls = item;
 	int i = 0;
-	while (((char *)ls->content)[i])
+	while (((char *)item)[i])
 	{
-		((char *)ls->content)[i] = ft_toupper(((char *)ls->content)[i]);
+		((char *)item)[i] = ft_toupper(((char *)item)[i]);
 		i++;
 	}
 }
@@ -85,12 +86,12 @@ int main()
 	char array2[memset_10];
 	printf("array, 'b', 0:	%p, %p\n", ft_memset(array1, 'b', memset_0), memset(array2, 'b', memset_0));
 	printf("array, 'a', 10:	%p, %p\n", ft_memset(array1, 'a', memset_10), memset(array2, 'a', memset_10));
-	printf("ft, 'null', 10:	%p\n", ft_memset((char *)NULL, 'a', memset_10));
+	// printf("ft, 'null', 10:	%p\n", ft_memset((char *)NULL, 'a', memset_10));
 	// printf("os, 'null', 10:	%p\n", memset((char *)NULL, 'a', memset_10));
 	printf("ft, 'null', 10:	%p\n", ft_memset(array1, 'a', (size_t)NULL));
 	printf("os, 'null', 10:	%p\n", memset(array1, 'a', (size_t)NULL));
-	printf("ft, 'null', 10:	%p\n", ft_memset((char *)NULL, 'a', (size_t)NULL));
-	printf("os, 'null', 10:	%p\n", memset((char *)NULL, 'a', (size_t)NULL));
+	// printf("ft, 'null', 10:	%p\n", ft_memset((char *)NULL, 'a', (size_t)NULL));
+	// printf("os, 'null', 10:	%p\n", memset((char *)NULL, 'a', (size_t)NULL));
 	printf("\nft_memset, memeset ");
 	int i = 0;
 	while (i < memset_10)
@@ -157,6 +158,7 @@ int main()
 		printf("%d, %d\n", memcpy_src3[i], memcpy_src4[i]);
 		i++;
 	}
+
 
 	printf("\n\nmemmove\n");
 	int memmove_src1[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -335,12 +337,14 @@ int main()
 	printf("-: %c, %c\n", (char)tolower('-'), (char)ft_tolower('-'));
 
 	printf("\nft_strchr\n");
-	char strchr_arr1[] = "Hello World!";
+	char strchr_arr1[] = "tripouille";
 	printf(">%s<\n>%s<\n", strchr(strchr_arr1, 'c'), ft_strchr(strchr_arr1, 'c'));
 	printf(">%s<\n>%s<\n", strchr(strchr_arr1, 'o'), ft_strchr(strchr_arr1, 'o'));
 	printf(">%s<\n>%s<\n", strchr(strchr_arr1, '!'), ft_strchr(strchr_arr1, '!'));
 	printf(">%s<\n>%s<\n", strchr(strchr_arr1, '\0'), ft_strchr(strchr_arr1, '\0'));
 	printf(">%s<\n>%s<\n", strchr(strchr_arr1, 'W'), ft_strchr(strchr_arr1, 'W'));
+
+	printf(">%s<\n>%s<\n", strchr(strchr_arr1, 't' + 256), ft_strchr(strchr_arr1, 't' + 256));
 
 	printf("\nft_strrchr\n");
 	char strchr_arr2[] = "Hello\0World!";
@@ -411,10 +415,10 @@ int main()
 	printf("#14: %d, %d\n", atoi("	 +---59"), ft_atoi("	 +---59"));
 
 	printf("\nft_calloc\n");
-	int *arr = (int *)ft_calloc(0, sizeof(int));
+	char *arr = ft_calloc(0, sizeof(char));
 	free(arr);
 	i = 5;
-	arr = (int *)ft_calloc(i, sizeof(int));
+	arr = ft_calloc(i, sizeof(int));
 	int j = 0;
 	while (j < i)
 	{
@@ -423,6 +427,22 @@ int main()
 	}
 	printf("\n");
 	free(arr);
+
+	arr = ft_calloc(INT_MAX, INT_MAX);
+	if (arr == NULL)
+	{
+		printf ("NULL!\n");
+		printf("%p\n", arr);
+	}
+
+	
+	arr = ft_calloc(-5, -5);
+	if (arr)
+	{
+		printf("%p\n", arr);
+		printf("%d\n", *arr);
+	}
+	return (0);
 
 	printf("\nft_strdup\n");
 	char *strdup_src = "Hello!";
@@ -637,11 +657,25 @@ int main()
 	printf("\n");
 	ft_putendl_fd("Hello", 1);
 	printf("\n");
-	ft_putnbr_fd(2, 1);
+	ft_putnbr_fd(120, 1);
+	printf("\n");
+	ft_putnbr_fd(969696, 1);
+	printf("\n");
+	ft_putnbr_fd(-1, 1);
+	printf("\n");
+	ft_putnbr_fd(0, 1);
+	printf("\n");
+	ft_putnbr_fd(1, 1);
+	printf("\n");
+	ft_putnbr_fd(-2147483648, 1);
+	printf("\n");
+	ft_putnbr_fd(2147483647, 1);
 	printf("\n");
 	ft_putstr_fd("Hello", 1);
 	printf("\n");
 
+	return(0);
+	
 	printf("\nft_striteri\n");
 	void (*ptr_uppercase_ptr)(unsigned int, char *);
 	ptr_uppercase_ptr = &uppercase_ptr;
@@ -667,6 +701,12 @@ int main()
 		printf("%s\n", (char *)begin->content);
 		begin = begin->next;
 	}
+	free(elem);
+	free(elem2);
+	free(elem3);
+	free(elem4);
+	free(elem5);
+	free(begin);
 
 	printf("\nft_lstadd_back\n");
 	elem = ft_lstnew("a");
@@ -685,6 +725,12 @@ int main()
 		printf("%s\n", (char *)begin->content);
 		begin = begin->next;
 	}
+	free(elem);
+	free(elem2);
+	free(elem3);
+	free(elem4);
+	free(elem5);
+	free(begin);
 
 	printf("\nft_lstiter\n");
 	char str_lstiter[] = "a";
@@ -709,6 +755,13 @@ int main()
 		printf("%s\n", (char *)begin->content);
 		begin = begin->next;
 	}
+	free(elem);
+	free(elem2);
+	free(elem3);
+	free(elem4);
+	free(elem5);
+	free(begin);
+
 	printf("\nEND _______________________________\n\n");
 	return (0);
 }

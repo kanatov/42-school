@@ -12,10 +12,10 @@
 
 #include "libft.h"
 
-static void push(char *str, char ***words_ptr)
+static void	push(char *str, char ***words_ptr)
 {
-	int i;
-	char **new_words;
+	int		i;
+	char	**new_words;
 
 	i = 0;
 	while ((*words_ptr)[i])
@@ -33,12 +33,12 @@ static void push(char *str, char ***words_ptr)
 		*words_ptr = NULL;
 }
 
-static void iterate(char ***words, char const *s, char c)
+static void	iterate(char ***words, char const *s, char c)
 {
-	int i;
-	int j;
-	char *ptr_c;
-	char *substr;
+	int		i;
+	int		j;
+	char	*ptr_c;
+	char	*substr;
 
 	i = 0;
 	while (s[i])
@@ -62,10 +62,12 @@ static void iterate(char ***words, char const *s, char c)
 	}
 }
 
-char **ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	char **words;
+	char	**words;
 
+	if (!s)
+		return (NULL);
 	words = malloc(sizeof(char *));
 	if (words == NULL)
 		return (NULL);

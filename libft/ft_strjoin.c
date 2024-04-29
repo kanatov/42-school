@@ -18,9 +18,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	s2_l;
 	char	*src;
 
+	if (!s1 || !s2)
+		return (NULL);
 	s1_l = ft_strlen(s1);
 	s2_l = ft_strlen(s2);
-	src = malloc(sizeof(s1) * (s1_l + s2_l + 1));
+	src = malloc(sizeof(char) * (s1_l + s2_l + 1));
 	if (!src)
 		return (NULL);
 	ft_strlcpy(src, s1, s1_l + 1);

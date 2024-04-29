@@ -12,13 +12,15 @@
 
 #include "libft.h"
 
-char *ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	char *str;
-	size_t start;
-	size_t end;
-	size_t len;
+	char	*str;
+	size_t	start;
+	size_t	end;
+	size_t	len;
 
+	if (!s1 || !set)
+		return (NULL);
 	start = 0;
 	end = ft_strlen(s1);
 	len = end;
