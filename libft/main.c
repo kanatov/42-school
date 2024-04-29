@@ -19,6 +19,17 @@ void uppercase_ptr(unsigned int i, char *c)
 		*c = ft_toupper(*c);
 }
 
+void uppercase_node(void *item)
+{
+	t_list *ls = item;
+	int i = 0;
+	while (((char *)ls->content)[i])
+	{
+		((char *)ls->content)[i] = ft_toupper(((char *)ls->content)[i]);
+		i++;
+	}
+}
+
 int main()
 {
 	printf("_______________________________\n\n");
@@ -669,6 +680,30 @@ int main()
 	ft_lstadd_back(&begin, elem3);
 	ft_lstadd_back(&begin, elem4);
 	ft_lstadd_back(&begin, elem5);
+	while (begin)
+	{
+		printf("%s\n", (char *)begin->content);
+		begin = begin->next;
+	}
+
+	printf("\nft_lstiter\n");
+	char str_lstiter[] = "a";
+	char str_lstiter2[] = "b";
+	char str_lstiter3[] = "c";
+	char str_lstiter4[] = "d";
+	char str_lstiter5[] = "e";
+	elem = ft_lstnew(str_lstiter);
+	elem2 = ft_lstnew(str_lstiter2);
+	elem3 = ft_lstnew(str_lstiter3);
+	elem4 = ft_lstnew(str_lstiter4);
+	elem5 = ft_lstnew(str_lstiter5);
+	begin = NULL;
+	ft_lstadd_back(&begin, elem);
+	ft_lstadd_back(&begin, elem2);
+	ft_lstadd_back(&begin, elem3);
+	ft_lstadd_back(&begin, elem4);
+	ft_lstadd_back(&begin, elem5);
+	ft_lstiter(begin, &uppercase_node);
 	while (begin)
 	{
 		printf("%s\n", (char *)begin->content);
