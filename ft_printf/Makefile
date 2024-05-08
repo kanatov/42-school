@@ -14,10 +14,10 @@ NAME = libftprintf.a
 NAME_MAIN = main
 SRC_MAIN = main.c
 SRC = ft_printf.c
-SRC_DIR = src
-INC_DIR = include
-TEST_DIR = test
-LIBFT_DIR = libft
+SRC_DIR = ./src
+INC_DIR = ./include
+TEST_DIR = ./test
+LIBFT_DIR = ./libft
 SRC_O =  $(SRC_DIR)/${SRC:.c=.o}
 RM = rm -rf
 CC = cc
@@ -32,7 +32,7 @@ $(NAME): $(SRC_O)
 	ar -rcs $@ $(LIBFT_DIR)/libft.a $(SRC_O)
 
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) -c $(CC_FLAGS) -I$(INC_DIR) -c $< -o $@
+	$(CC) -c $< $(CC_FLAGS) -I$(LIBFT_DIR) -I$(INC_DIR) -o $@
 
 clean:
 	$(RM) $(SRC_O) $(TEST_DIR)/$(NAME_MAIN)
@@ -47,4 +47,4 @@ re: fclean all
 main: $(NAME) $(TEST_DIR)/$(NAME_MAIN)
 
 $(TEST_DIR)/$(NAME_MAIN):
-	$(CC) $(TEST_DIR)/$(SRC_MAIN) -o $@ -I$(INC_DIR) libftprintf.a
+	$(CC) $(TEST_DIR)/$(SRC_MAIN) -o $@ -I$(LIBFT_DIR) -I$(INC_DIR) libftprintf.a $(LIBFT_DIR)/libft.a

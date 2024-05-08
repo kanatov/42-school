@@ -14,8 +14,11 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
+# include "libft.h"
 # include <stdio.h> // DELETE THAT
 
 int	ft_printf(const char *str, ...);
-
+typedef size_t (*t_functions_dispatch)(va_list *ap);
+size_t ft_printf_d (va_list *args);
+size_t ft_printf_s (va_list *args);
 #endif
