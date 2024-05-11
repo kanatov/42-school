@@ -29,20 +29,25 @@ size_t	ft_printf_s(va_list	*ptr_args)
 
 size_t	ft_printf_p(va_list	*ptr_args)
 {
-	char hex_digits[] = "0123456789abcdef";
-	unsigned long int address = (unsigned long int)va_arg(*ptr_args, void *);
-	char buffer[15];
+	char buffer[16];
+	char *str;
+	unsigned long int address;
+	int i;
+
 	// buffer[0] = '0';
 	// buffer[1] = 'x';
-	int i = 15;
+	buffer[15] = '\0';
+	address = (unsigned long int)va_arg(*ptr_args, void *);
+	i = 14;
 	while (address) {
-		buffer[i] = hex_digits[address % 16];
+		buffer[i] = "0123456789abcdef"[address % 16];
 		address /= 16;
 		i--;
 	}
-	buffer[16] = '\0';
-	ft_putstr_fd(buffer, 1);
-	return(ft_strlen(buffer));
+	i++;
+	str = ft_substr(buffer,i,15-i);
+	ft_putstr_fd(str, 1);
+	return(ft_strlen(str));
 }
 
 size_t	ft_printf_d(va_list	*ptr_args)
