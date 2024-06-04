@@ -9,11 +9,12 @@ int main()
 
 	fd = open("nline.txt", O_RDONLY);
 	str = get_next_line(fd);
-	while (str && *str)
+	printf("%p\n>%s<\n", str, str);
+	while (str)
 	{
-		printf(">%s<\n", str);
 		free(str);
 		str = get_next_line(fd);
+		printf("%p\n>%s<\n", str, str);
 	}
 	return 1;
 }

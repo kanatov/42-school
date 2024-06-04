@@ -75,6 +75,23 @@ char *concat(char *str, char *buffer)
     return new_str;
 }
 
+char *check_new_line(char *str)
+{
+    int new_line_position;
+    int bytes_read;
+    char *substr;
+
+    new_line_position = find_new_line(str);
+    if (new_line_position >= 0)
+    {
+        bytes_read = ft_strlen(str) - (bytes_read - new_line_position) + 1;
+        substr = substring(0, bytes_read, str);
+        free(str);
+        buffer = substring(new_line_position + 2, (BUFFER_SIZE - new_line_position), str);
+        return str;
+    }
+    return NULL;
+}
 char *get_next_line(int fd)
 {
     static char *str = NULL;
@@ -90,19 +107,10 @@ char *get_next_line(int fd)
     while (bytes_read > 0)
     {
         buffer[bytes_read] = '\0';
+        check_new_line(buffer);
         str = concat(str, buffer);
         if (!str)
             return NULL;
-        new_line_position = find_new_line(buffer);
-        if (new_line_position >= 0)
-        {
-            bytes_read = ft_strlen(str) - (BUFFER_SIZE - new_line_position) + 1;
-            line = substring(0, bytes_read, str);
-            free(str);
-            str = substring(new_line_position + 2, (BUFFER_SIZE - new_line_position), buffer);
-            free(buffer);
-            return line;
-        }
         bytes_read = read(fd, buffer, BUFFER_SIZE);
     }
     free(buffer);
