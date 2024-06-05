@@ -12,53 +12,23 @@
 
 #include "get_next_line.h"
 
-char	*substring(int start, int length, char *str)
-{
-	char	*substr;
-	int		i;
+// char	*substring(int start, int length, char *str)
+// {
+// 	char	*substr;
+// 	int		i;
+// 	char	*new_str;
 
-	substr = malloc(sizeof(char) * (length + 1));
-	i = 0;
-	while (str[i] && i < length)
-	{
-		substr[i] = str[i + start];
-		i++;
-	}
-	substr[length] = '\0';
-	return (substr);
-}
+// 	substr = malloc(sizeof(char) * (length + 1));
+// 	i = 0;
+// 	while (str[i] && i < length)
+// 	{
+// 		substr[i] = str[i + start];
+// 		i++;
+// 	}
+// 	substr[length] = '\0';
+// 	// new_str = substring(nl_index, ft_strlen(str) - (nl_index), str);
+// 	free(str);
+// 	str = new_str;
+// 	return (substr);
+// }
 
-int	ft_strlen(char *str)
-{
-	char	*str_l;
-
-	if (!str)
-		return (0);
-	str_l = str;
-	while (*str_l)
-		str_l++;
-	return (str_l - str);
-}
-
-char	*concat(char *str, char *buffer)
-{
-	char	*new_str;
-	int		i;
-	int		j;
-
-	new_str = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(buffer) + 1));
-	if (!new_str)
-		return (NULL);
-	i = 0;
-	j = 0;
-	if (str)
-	{
-		while (str[j])
-			new_str[i++] = str[j++];
-	}
-	j = 0;
-	while (buffer[j])
-		new_str[i++] = buffer[j++];
-	new_str[i] = '\0';
-	return (new_str);
-}
