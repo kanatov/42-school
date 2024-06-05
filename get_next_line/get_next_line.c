@@ -1,119 +1,80 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ikanatov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/04 23:38:04 by ikanatov          #+#    #+#             */
+/*   Updated: 2024/06/04 23:38:06 by ikanatov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-void str_copy(char *dest, char *src, int l)
+int	find_nl(char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (src[i] && l--)
-    {
-        dest[i] = src[i];
-        i++;
-    }
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
-char *substring(int start, int length, char *str)
+char	*has_nl(char *str)
 {
-    char *substr;
+	int		nl_index;
 
-    substr = malloc(sizeof(char) * (length + 1));
-    str_copy(substr, str + start, length);
-    substr[length] = '\0';
-    return substr;
+	if (!str)
+		return (NULL);
+	nl_index = find_nl(str);
+	if (nl_index < 0)
+		return (NULL);
+	return substring(0, nl_index, str);
 }
 
-int find_new_line(char *str)
+char	*read_doc(int fd, char *str, char *buffer)
 {
-    int i;
+	char	*line;
+	int		r_byte;
+	char	*new_line;
 
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] == '\n')
-            return i;
-        i++;
-    }
-    return -1;
+	while (1)
+	{
+		r_byte = read(fd, buffer, BUFFER_SIZE);
+		if (r_byte < 1)
+			return (str);
+		buffer[r_byte] = '\0';
+		line = has_nl(buffer);
+		if (line)
+		{
+			new_line = concat(str, line);
+			free(str);
+			// str = substring(find_nl(buffer), r_byte - find_nl(buffer), buffer);
+			return (new_line);
+		}
+		str = concat(str, buffer);
+	}
 }
 
-int ft_strlen(char *str)
+char	*get_next_line(int fd)
 {
-    char *str_l;
+	static char	*str = NULL;
+	char		*line;
+	char		*buffer;
 
-    if (!str)
-        return 0;
-    str_l = str;
-    while (*str_l)
-        str_l++;
-    return (str_l - str);
-}
-
-char *concat(char *str, char *buffer)
-{
-    char *new_str;
-    int str_l;
-    int buffer_l;
-    int i;
-    int j;
-
-    str_l = ft_strlen(str);
-    buffer_l = ft_strlen(buffer);
-    new_str = malloc(sizeof(char) * (str_l + buffer_l + 1));
-    if (!new_str)
-        return NULL;
-    i = 0;
-    j = 0;
-    if (str)
-    {
-        while (str[j])
-            new_str[i++] = str[j++];
-    }
-    j = 0;
-    while (buffer[j])
-        new_str[i++] = buffer[j++];
-    free(str);
-    return new_str;
-}
-
-char *check_new_line(char *str)
-{
-    int new_line_position;
-    int bytes_read;
-    char *substr;
-
-    new_line_position = find_new_line(str);
-    if (new_line_position >= 0)
-    {
-        bytes_read = ft_strlen(str) - (bytes_read - new_line_position) + 1;
-        substr = substring(0, bytes_read, str);
-        free(str);
-        buffer = substring(new_line_position + 2, (BUFFER_SIZE - new_line_position), str);
-        return str;
-    }
-    return NULL;
-}
-char *get_next_line(int fd)
-{
-    static char *str = NULL;
-    char *buffer;
-    int bytes_read;
-    int new_line_position;
-    char *line;
-
-    buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-    bytes_read = read(fd, buffer, BUFFER_SIZE);
-    if (fd == -1 || !BUFFER_SIZE || !buffer || bytes_read < 1)
-        return NULL;
-    while (bytes_read > 0)
-    {
-        buffer[bytes_read] = '\0';
-        check_new_line(buffer);
-        str = concat(str, buffer);
-        if (!str)
-            return NULL;
-        bytes_read = read(fd, buffer, BUFFER_SIZE);
-    }
-    free(buffer);
-    close(fd);
-    return str;
+	if (fd == -1 || !BUFFER_SIZE)
+		return (NULL);
+	line = has_nl(str);
+	if (line)
+		return (line);
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (NULL);
+	return (read_doc(fd, str, buffer));
 }

@@ -7,14 +7,15 @@ int main()
 	int fd;
 	char *str;
 
-	fd = open("nline.txt", O_RDONLY);
-	str = get_next_line(fd);
-	printf("%p\n>%s<\n", str, str);
-	while (str)
+	fd = open("short.txt", O_RDONLY);
+	str = malloc(1);
+	do
 	{
 		free(str);
 		str = get_next_line(fd);
-		printf("%p\n>%s<\n", str, str);
-	}
+		printf(">%s<\n", str);
+	} while (str);
+	
+	close(fd);
 	return 1;
 }

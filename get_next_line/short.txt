@@ -2,4 +2,4 @@ This part of the subject tells that the buffer size will be defined/modified dur
 
 So we define the BUFFER_SIZE macro in the get_next_line.h file. BUFFER_SIZE.
 
-I would like to set a default size of 3 just like I started writing in my code. So, I say, “if the BUFFER_SIZE macro is not already defined (by an external source like -D), it will be assigned the value of 3 by default. This helps me easily adjust the BUFFER_SIZE in one place (the #define statement) without modifying my code in multiple locations.
+I would like to set a default size of 3 just like I started writing in my code. So, I say, “if the BUFFER_SIZE macro is not already defined (by an external source like -D), it will be assigned the value of 3 by default. This helps me easily adjust the BUFFER_SIZE in one place (the #define statement) without modifying my code in multiple locations.(line)
