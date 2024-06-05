@@ -39,7 +39,6 @@ char *read_doc(int fd, char **cache_ptr)
 	{
 		// Copy cache leftowers to a new line + place for buffer
 		cache_length = ft_strlen(*cache_ptr);
-
 		line = malloc(sizeof(char) * (cache_length + BUFFER_SIZE + 1));
 		if (!line)
 			return NULL;
@@ -53,14 +52,18 @@ char *read_doc(int fd, char **cache_ptr)
 		// Read to the end of line
 		r_byte = read(fd, line+i_line, BUFFER_SIZE);
 		if (r_byte < 1)
-			return (*cache_ptr);
+		{
+			line = *cache_ptr;
+			*cache_ptr = NULL;
+			return (line);
+		}
 		line[r_byte + i_line] = '\0';
 		i_buffer = 0;
 
 		// Check if the added part has new line
-		free(*cache_ptr);
-		*cache_ptr = malloc(sizeof(char) * (BUFFER_SIZE+1));
-		*cache_ptr[0] = '\0';
+		*cache_ptr = NULL;
+		if (r_byte)
+			*cache_ptr = malloc(sizeof(char) * (BUFFER_SIZE+1));
 		nl_flag = 0;
 		i_cache = 0;
 		while (line[i_line + i_cache])
@@ -79,7 +82,10 @@ char *read_doc(int fd, char **cache_ptr)
 			else
 				i_line++;
 		}
-		(*cache_ptr)[i_cache] = '\0';
+		if (i_cache)
+			(*cache_ptr)[i_cache] = '\0';
+		else
+			*cache_ptr = NULL;
 		if (nl_flag)
 			return (line);
 		*cache_ptr = line;

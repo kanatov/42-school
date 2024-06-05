@@ -8,13 +8,17 @@ int main()
 	char *str;
 
 	fd = open("short.txt", O_RDONLY);
-	str = malloc(1);
-	do
-	{
-		free(str);
+	while (1){
 		str = get_next_line(fd);
-		printf(">%s<\n", str);
-	} while (str);
+		if (str)
+		{
+			printf(">%s<\n", str);
+			free(str);
+		}
+		else
+			break;
+			
+	};
 	
 	close(fd);
 	return 1;
