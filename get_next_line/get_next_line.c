@@ -16,6 +16,8 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i])
 		i++;
@@ -29,35 +31,65 @@ int	write_to_cache(char **cache_ptr, int fd)
 	char *new_cache;
 	int i;
 
-	c_len = 0;
-	if (*cache_ptr)
-		c_len = ft_strlen(*cache_ptr);
+	c_len = ft_strlen(*cache_ptr);
 	new_cache = malloc(sizeof(char) * (c_len + BUFFER_SIZE + 1));
 	i = 0;
-	while (i < c_len)
+	while (c_len && (*cache_ptr)[i])
 	{
 		new_cache[i] = (*cache_ptr)[i];
 		i++;
 	}
 	r_byte = read(fd, new_cache + i, BUFFER_SIZE);
 	new_cache[c_len + r_byte] = '\0';
-
 	if (r_byte)
 	{
 		free(*cache_ptr);
 		*cache_ptr = new_cache;
 		return (1);
 	}
+	free(new_cache);
 	return (0);
 }
 
 char	*read_from_cache(char **cache_ptr)
 {
-	char *line;
+	char	*new_cache;
+	char	*tmp;
+	int		c_len;
+	int		i;
+	int		j;
+	int		nl;
 
-	(void)cache_ptr;
-	line = NULL;
-	return line;
+	c_len = ft_strlen(*cache_ptr);
+	if (!c_len)
+		return (NULL);
+	new_cache = malloc(sizeof(char) * (BUFFER_SIZE+1));
+	i = 0;
+	if (c_len > BUFFER_SIZE)
+		i = c_len - BUFFER_SIZE;
+	nl = 0;
+	j = 0;
+	while ((*cache_ptr)[i + j])
+	{
+		if (!nl && (*cache_ptr)[i++] == '\n')
+			nl = 1;
+		if (nl)
+		{
+			new_cache[j] = (*cache_ptr)[i + j];
+			(*cache_ptr)[i + j] = '\0';
+			j++;
+		}
+		else
+			i++;
+	}
+	if (!nl)
+		return NULL;
+	new_cache[j] = '\0';
+	tmp = *cache_ptr;
+	*cache_ptr = new_cache;
+	new_cache = tmp;
+	// printf("cache_ptr: >%s<\nnew_cache: >%s<\n", *cache_ptr, new_cache);
+	return new_cache;
 }
 
 char	*get_next_line(int fd)
@@ -70,16 +102,10 @@ char	*get_next_line(int fd)
 	{
 		isWritten = 0;
 		line = NULL;
-		// 1. Check new lines in cache
 		if (cache)
 			line = read_from_cache(&cache);
-
-		// 2. Return new line, keep the rest in cache
 		if (line)
 			return (line);
-
-		// 3. Read new buffer to cache
-		// 4. Nothing to read
 		isWritten = write_to_cache(&cache, fd);
 		if (!isWritten && !cache)
 			return NULL;
@@ -91,5 +117,20 @@ char	*get_next_line(int fd)
 		}
 	}
 }
+// 1. Check new lines in cache
+// 2. Return new line, keep the rest in cache
+// 3. Read new buffer to cache
+// 4. Nothing to read
+
+// 0 read		(0)
+// no cache		!cache
+// return		null
+
+// 0 read		(0)
+// has cache	cache
+// return		cache
+
+// 1 read		(1)
+// continue
 
 
