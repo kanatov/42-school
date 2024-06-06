@@ -24,6 +24,36 @@ int	ft_strlen(char *str)
 	return (str_l - str);
 }
 
+int	check_nl (char **cache_ptr, char **line_ptr, int i_line)
+{
+	int nl_flag;
+	int i_cache;
+
+	// Check if the added part has new line
+	*cache_ptr = malloc(sizeof(char) * (BUFFER_SIZE+1));
+	nl_flag = 0;
+	i_cache = 0;
+	while ((*line_ptr)[i_line + i_cache])
+	{
+		if ((*line_ptr)[i_line] == '\n' && !nl_flag)
+		{
+			nl_flag = 1;
+			i_line++;
+		}
+		if (nl_flag)
+		{
+			(*cache_ptr)[i_cache] = (*line_ptr)[i_line + i_cache];
+			(*line_ptr)[i_line + i_cache] = '\0';
+			i_cache++;
+		}
+		else
+			i_line++;
+	}
+	(*cache_ptr)[i_cache] = '\0';
+	return nl_flag;
+}
+
+
 char	*get_next_line(int fd)
 {
 	static char	*cache = NULL;
@@ -32,8 +62,6 @@ char	*get_next_line(int fd)
 	int		cache_length;
 	int		i_line;
 	int		i_buffer;
-	int		nl_flag;
-	int		i_cache;
 
 	if (fd == -1 || !BUFFER_SIZE)
 		return (NULL);
@@ -65,32 +93,13 @@ char	*get_next_line(int fd)
 		line[r_byte + i_line] = '\0';
 		i_buffer = 0;
 		
-		// Check if the added part has new line
-		cache = malloc(sizeof(char) * (BUFFER_SIZE+1));
-		nl_flag = 0;
-		i_cache = 0;
-		while (line[i_line + i_cache])
-		{
-			if (line[i_line] == '\n' && !nl_flag)
-			{
-				nl_flag = 1;
-				i_line++;
-			}
-			if (nl_flag)
-			{
-				cache[i_cache] = line[i_line + i_cache];
-				line[i_line + i_cache] = '\0';
-				i_cache++;
-			}
-			else
-				i_line++;
-		}
-		if (i_cache)
-			cache[i_cache] = '\0';
-		else
-			cache = NULL;
-		if (nl_flag)
+		if (check_nl(&cache, &line, i_line))
 			return (line);
 		cache = line;
 	}
 }
+
+// 1. Check if anything in cache
+	// 2. Check new lines in cache
+	// 3. Return new line, keep the rest in cache
+// 4. Read new buffer to cache
