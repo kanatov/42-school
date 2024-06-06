@@ -8,6 +8,7 @@ int main()
 	char *str;
 
 	fd = open("short.txt", O_RDONLY);
+	// fd = open("4kb.txt", O_RDONLY);
 	while (1){
 		str = get_next_line(fd);
 		if (str)

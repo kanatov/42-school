@@ -24,8 +24,9 @@ int	ft_strlen(char *str)
 	return (str_l - str);
 }
 
-char *read_doc(int fd, char **cache_ptr)
+char	*get_next_line(int fd)
 {
+	static char	*cache = NULL;
 	char	*line;
 	int		r_byte;
 	int		cache_length;
@@ -34,36 +35,38 @@ char *read_doc(int fd, char **cache_ptr)
 	int		nl_flag;
 	int		i_cache;
 
-	// Get new buffer
+	if (fd == -1 || !BUFFER_SIZE)
+		return (NULL);
+	
 	while (1)
 	{
 		// Copy cache leftowers to a new line + place for buffer
-		cache_length = ft_strlen(*cache_ptr);
+		cache_length = ft_strlen(cache);
 		line = malloc(sizeof(char) * (cache_length + BUFFER_SIZE + 1));
-		if (!line)
-			return NULL;
+			if (!line)
+				return NULL;
 		i_line = 0;
-		while (*cache_ptr && (*cache_ptr)[i_line])
+		while (cache_length && cache && cache[i_line])
 		{
-			line[i_line] = (*cache_ptr)[i_line];
+			line[i_line] = cache[i_line];
 			i_line++;
 		}
 
-		// Read to the end of line
+		//Try to read
 		r_byte = read(fd, line+i_line, BUFFER_SIZE);
+		// Nothing to read, NULL cache and return new value
 		if (r_byte < 1)
 		{
-			line = *cache_ptr;
-			*cache_ptr = NULL;
+			line = cache;
+			cache = NULL;
 			return (line);
 		}
+		// Have something to read
 		line[r_byte + i_line] = '\0';
 		i_buffer = 0;
-
+		
 		// Check if the added part has new line
-		*cache_ptr = NULL;
-		if (r_byte)
-			*cache_ptr = malloc(sizeof(char) * (BUFFER_SIZE+1));
+		cache = malloc(sizeof(char) * (BUFFER_SIZE+1));
 		nl_flag = 0;
 		i_cache = 0;
 		while (line[i_line + i_cache])
@@ -75,7 +78,7 @@ char *read_doc(int fd, char **cache_ptr)
 			}
 			if (nl_flag)
 			{
-				(*cache_ptr)[i_cache] = line[i_line + i_cache];
+				cache[i_cache] = line[i_line + i_cache];
 				line[i_line + i_cache] = '\0';
 				i_cache++;
 			}
@@ -83,21 +86,11 @@ char *read_doc(int fd, char **cache_ptr)
 				i_line++;
 		}
 		if (i_cache)
-			(*cache_ptr)[i_cache] = '\0';
+			cache[i_cache] = '\0';
 		else
-			*cache_ptr = NULL;
+			cache = NULL;
 		if (nl_flag)
 			return (line);
-		*cache_ptr = line;
+		cache = line;
 	}
-}
-
-char	*get_next_line(int fd)
-{
-	static char	*cache = NULL;
-
-	if (fd == -1 || !BUFFER_SIZE)
-		return (NULL);
-	
-	return (read_doc(fd, &cache));
 }
