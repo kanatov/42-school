@@ -22,7 +22,4 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*substring(int start, int length, char *str);
-int		ft_strlen(char *str);
-char	*concat(char *str, char *buffer);
 #endif
