@@ -41,13 +41,19 @@ int	write_to_cache(char **cache_ptr, int fd)
 	}
 	r_byte = read(fd, new_cache + i, BUFFER_SIZE);
 	new_cache[c_len + r_byte] = '\0';
+	if (!r_byte && c_len)
+	{
+		free(new_cache);
+		new_cache = NULL;
+	}
+
 	if (r_byte)
 	{
-		free(*cache_ptr);
 		*cache_ptr = new_cache;
 		return (1);
 	}
 	free(new_cache);
+	
 	return (0);
 }
 
@@ -71,8 +77,11 @@ char	*read_from_cache(char **cache_ptr)
 	j = 0;
 	while ((*cache_ptr)[i + j])
 	{
-		if (!nl && (*cache_ptr)[i++] == '\n')
+		if (!nl && (*cache_ptr)[i] == '\n')
+		{
 			nl = 1;
+			i++;
+		}
 		if (nl)
 		{
 			new_cache[j] = (*cache_ptr)[i + j];
@@ -88,7 +97,6 @@ char	*read_from_cache(char **cache_ptr)
 	tmp = *cache_ptr;
 	*cache_ptr = new_cache;
 	new_cache = tmp;
-	// printf("cache_ptr: >%s<\nnew_cache: >%s<\n", *cache_ptr, new_cache);
 	return new_cache;
 }
 
@@ -98,6 +106,8 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			isWritten;
 
+	if (BUFFER_SIZE < 1 || fd < 0)
+		return (NULL);
 	while(1)
 	{
 		isWritten = 0;
@@ -107,8 +117,12 @@ char	*get_next_line(int fd)
 		if (line)
 			return (line);
 		isWritten = write_to_cache(&cache, fd);
-		if (!isWritten && !cache)
+		if ((!isWritten && !cache) || (!isWritten && !*cache))
+		{
+			free(cache);
+			cache = NULL;
 			return NULL;
+		}
 		if (!isWritten && cache)
 		{
 			line = cache;
