@@ -49,6 +49,7 @@ int	write_to_cache(char **cache_ptr, int fd)
 
 	if (r_byte)
 	{
+		free(*cache_ptr);
 		*cache_ptr = new_cache;
 		return (1);
 	}
@@ -66,7 +67,7 @@ char	*read_from_cache(char **cache_ptr)
 	int		j;
 	int		nl;
 
-	c_len = ft_strlen(*cache_ptr);
+	c_len = 0;
 	if (!c_len)
 		return (NULL);
 	new_cache = malloc(sizeof(char) * (BUFFER_SIZE+1));
@@ -75,7 +76,7 @@ char	*read_from_cache(char **cache_ptr)
 		i = c_len - BUFFER_SIZE;
 	nl = 0;
 	j = 0;
-	while ((*cache_ptr)[i + j])
+	while (i + j < c_len)
 	{
 		if (!nl && (*cache_ptr)[i] == '\n')
 		{
@@ -92,7 +93,10 @@ char	*read_from_cache(char **cache_ptr)
 			i++;
 	}
 	if (!nl)
+	{
+		free(new_cache);
 		return NULL;
+	}
 	new_cache[j] = '\0';
 	tmp = *cache_ptr;
 	*cache_ptr = new_cache;
@@ -108,6 +112,8 @@ char	*get_next_line(int fd)
 
 	if (BUFFER_SIZE < 1 || fd < 0)
 		return (NULL);
+	if (cache && !*cache)
+		free(cache);
 	while(1)
 	{
 		isWritten = 0;
@@ -116,6 +122,8 @@ char	*get_next_line(int fd)
 			line = read_from_cache(&cache);
 		if (line)
 			return (line);
+		else
+			free(line);
 		isWritten = write_to_cache(&cache, fd);
 		if ((!isWritten && !cache) || (!isWritten && !*cache))
 		{

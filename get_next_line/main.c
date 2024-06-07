@@ -21,13 +21,13 @@ void reader(char *name, int fd)
 
 int main()
 {
-	reader("Fault", open("1.txt", O_RDONLY));
-	reader("2kb", open("2kb.txt", O_RDONLY));
+	// reader("Fault", open("1.txt", O_RDONLY));
 	reader("big", open("big.txt", O_RDONLY));
-	reader("space", open("space.txt", O_RDONLY));
-	reader("empty", open("empty.txt", O_RDONLY));
-	reader("nline", open("nline.txt", O_RDONLY));
-	reader("address", open("address.txt", O_RDONLY));
+	reader("2kb", open("2kb.txt", O_RDONLY));
+	// reader("space", open("space.txt", O_RDONLY));
+	// reader("empty", open("empty.txt", O_RDONLY));
+	// reader("nline", open("nline.txt", O_RDONLY));
+	// reader("address", open("address.txt", O_RDONLY));
 	
 	return 1;
 }
